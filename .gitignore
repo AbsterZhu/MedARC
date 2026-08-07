@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments and secrets
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Training/evaluation products
+output/
+output_*/
+**/output/
+**/output_*/
+logs/
+**/logs/
+wandb/
+runs/
+cache/
+**/cache/
+*.log
+*.pid
+
+# Model weights and distributed checkpoints
+*.bin
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.h5
+global_step*/
+checkpoint-*/
+
+# Medical data and generated feature caches are acquired separately.
+data/
+dataset/**
+!dataset/README.md
+features/
+
+# 3DINO is installed as an unmodified external dependency because its
+# CC BY-NC-ND 4.0 license does not permit distributing modified copies.
+3DINO/dinov2/
+third_party/
+
+# Packaging
+build/
+dist/
+*.egg-info/

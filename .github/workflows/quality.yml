@@ -1,0 +1,39 @@
+name: quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate shell syntax
+        run: |
+          bash -n Qwen-VL-Series-Finetune/scripts/*.sh
+          bash -n Qwen-VL-Series-Finetune/scripts_med/*.sh
+
+      - name: Compile Python sources
+        run: |
+          python -m compileall -q 3DINO Qwen-VL-Series-Finetune/src
+
+      - name: Reject machine-specific absolute paths
+        shell: bash
+        run: |
+          if grep -RInE \
+            --include='*.py' --include='*.sh' --include='*.yaml' --include='*.yml' \
+            '(/home/|/projects/|/workspace/|/scratch/|/gpfs/|/nfs/)' \
+            3DINO/precompute_3dino_med_align.py \
+            Qwen-VL-Series-Finetune; then
+            echo "Machine-specific absolute path detected." >&2
+            exit 1
+          fi
