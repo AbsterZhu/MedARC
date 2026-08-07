@@ -12,6 +12,8 @@ htmlcov/
 .env
 .env.*
 !.env.example
+.git-local/
+.git-local-env
 .venv/
 venv/
 env/
@@ -37,6 +39,7 @@ cache/
 *.pid
 
 # Model weights and distributed checkpoints
+checkpoints/
 *.bin
 *.ckpt
 *.pt
