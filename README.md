@@ -1,11 +1,7 @@
-# MedARC
-
-Official implementation of **MedARC: Training-Free Adaptive Redundancy
-Compression of Visual Tokens for 3D Medical Vision-Language Models**.
+# Official implementation of **MedARC: Training-Free Adaptive Redundancy Compression of Visual Tokens for 3D Medical Vision-Language Models**.
 
 [[Paper](https://arxiv.org/abs/2607.26554)]
 [[PDF](https://arxiv.org/pdf/2607.26554)]
-[[Code](https://github.com/AbsterZhu/MedARC)]
 [[Checkpoints](https://drive.google.com/drive/folders/1iSwQHWZ08Y_Y_9mJJIXvFRd9VeqBpX5D?usp=sharing)]
 
 MedARC is a training-free visual-token compression method for volumetric
@@ -19,6 +15,42 @@ Important tokens are retained, while redundant tokens are merged into
 contextual anchors before LLM decoding. This repository focuses on reproducing
 the paper's CT-RATE report/VQA and MR-RATE report-generation evaluation.
 
+## Repository layout
+
+The recommended layout below separates publishable source files from local
+data, checkpoints, third-party code, and generated outputs.
+
+```text
+MedARC/
+├── 3DINO/
+│   ├── dinov2/                            # Source code from 3DINO
+│   ├── 3dino_vit_weights.pth
+│
+├── Qwen-VL-Series-Finetune/
+│   ├── scripts/                           # Fine-tuning utilities (not needed to test)
+│   ├── scripts_med/
+│   └── src/
+│
+├── dataset/                               # Manifest area
+│   ├── README.md                          # Manifest schema and data instructions
+│   ├── CT-RATE/                           # local, ignored
+│   │   ├── validation_reports_cleaned_med_readable.json
+│   │   └── valid_vqa_cleaned_med_readable.json
+│   └── MR-RATE/                           # local, ignored
+│       ├── mr_rate_med_train_readable.json
+│       └── mr_rate_med_test_readable.json
+│
+├── data/                                  # Raw/resampled NIfTI volumes; local, ignored
+│   ├── CT-RATE/                           # Paths referenced by CT manifests
+│   └── MR-RATE/                           # Paths referenced by MRI manifests
+│
+└── output/                           # Google Drive weights; local, ignored
+    ├── CT-RATE/
+    │   ├── ct_stage_2/                    # Set as MODEL_BASE
+    │   └── ct_stage_3/                    # Set as MODEL_PATH
+    └── MR-RATE/
+        └── mri_stage_3/                   # Set as MODEL_PATH
+```
 
 ## Setup
 
@@ -53,15 +85,14 @@ MedARC uses frozen 3DINO features for structural saliency. Obtain the official
 source and pretrained weight separately:
 
 ```bash
-mkdir -p third_party
-git clone https://github.com/AICONSlab/3DINO.git third_party/3DINO
+git clone https://github.com/AICONSlab/3DINO.git
 ```
 
 Accept the terms at [AICONSlab/3DINO-ViT](https://huggingface.co/AICONSlab/3DINO-ViT)
 and place `3dino_vit_weights.pth` at:
 
 ```text
-third_party/3DINO/3dino_vit_weights.pth
+3DINO/3dino_vit_weights.pth
 ```
 
 3DINO is licensed separately under CC BY-NC-ND 4.0 and is restricted to
